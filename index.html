@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Balancing a Ball on the Tabletop</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+      }
+    
+      h1 {
+        margin: 0;
+      }
+    
+      #game-container {
+        margin: 0 auto;
+        width: 600px;
+        height: 600px;
+        border: 1px solid #000;
+        position: relative;
+      }
+    
+      #ball-container {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    
+      #ball {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #000;
+      }
+    
+      #pressure-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    
+      #pressure-up,
+      #pressure-down,
+      #pressure-left,
+      #pressure-right {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #f00;
+        opacity: 0.5;
+      }
+    
+      #pressure-up {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    
+      #pressure-down {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    
+      #pressure-left {
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    
+      #pressure-right { right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      }
+
+      #timer {
+      position: absolute;
+      top: 0;
+      right: 0;
+      }
+    </style>
+    <script>
+      const gameContainer = document.getElementById("game-container");
+      const ballContainer = document.getElementById("ball-container");
+      const ball = document.getElementById("ball");
+      const pressureUp = document.getElementById("pressure-up");
+      const pressureDown = document.getElementById("pressure-down");
+      const pressureLeft = document.getElementById("pressure-left");
+      const pressureRight = document.getElementById("pressure-right");
+      const timer = document.getElementById("timer");
+      const playButton = document.getElementById("play-button");
+      const nicknameInput = document.getElementById("nickname");
+    
+      let startTime;
+      let gameOver = false;
+      let gameInterval;
+    
+      function startGame() {
+        // Hide play button and nickname input
+        playButton.style.display = "none";
+        nicknameInput.style.display = "none";
+    
+        // Show game container
+        gameContainer.style.display = "block";
+    
+        // Set start time
+        startTime = Date.now();
+    
+        // Start game interval
+        gameInterval = setInterval(updateGame, 16);
+      }
+    
+      function updateGame() {
+        // Update timer
+        const elapsedTime = Date.now() - startTime;
+        timer.innerHTML = `Elapsed time: ${Math.floor(
+          elapsedTime / 1000
+        )} seconds`;
+    
+        // Update ball position
+        const ballPosition = ballContainer.getBoundingClientRect();
+        if (ballPosition.top <= 0) {
+          // Ball is touching the top of the game container
+          ballContainer.style.top = "0";
+        } else if (ballPosition.bottom >= gameContainer.offsetHeight) {
+          // Ball is touching the bottom of the game container
+          ballContainer.style.top = `${gameContainer.offsetHeight -
+            ball.offsetHeight}px`;
+        }
+        if (ballPosition.left <= 0) {
+          // Ball is touching the left side of the game container
+          ballContainer.style.left = "0";
+        } else if (ballPosition.right >= gameContainer.offsetWidth) {
+          // Ball is touching the right side of the game container
+          ballContainer.style.left = `${gameContainer.offsetWidth -
+            ball.offsetWidth}px`;
+        }
+    
+        // Update pressure positions
+        pressureUp.style.top = `${
+          Math.random() > 0.5 ? 0 : gameContainer.offsetHeight
+        }px`;
+        pressureDown.style.bottom = `${
+          Math.random() > 0.5 ? 0 : gameContainer.offsetHeight
+        }px`;
+        pressureLeft.style.left = `${
+          Math.random() > 0.5 ? 0 : gameContainer.offsetWidth
+        }px`;
+        pressureRight.style.right = `${
+          Math.random() > 0.5 ? 0 : gameContainer.offsetWidth
+        }px`;
+        // Check for game over
+        if (
+          ballPosition.top <= 0 ||
+          ballPosition.bottom >= gameContainer.offsetHeight ||
+          ballPosition.left <= 0 ||
+          ballPosition.right >= gameContainer.offsetWidth
+        ) {
+          endGame();
+        }
+        }
+
+        function endGame() {
+        // Stop game interval
+        clearInterval(gameInterval);
+
+        // Show game over message
+        gameContainer.innerHTML = `
+          <h1>Game Over!</h1>
+          <p>Your time: ${Math.floor((Date.now() - startTime) / 1000)} seconds</p>
+          <button id="play-again-button">Play Again</button>
+        `;
+
+        // Add play again button event listener
+        const playAgainButton = document.getElementById("play-again-button");
+        playAgainButton.addEventListener("click", () => {
+          location.reload();
+        });
+        }
+
+        // Add play button event listener
+        playButton.addEventListener("click", startGame);
+        </script>
+  </head>
+  <body>
+    <h1>Balancing a Ball on the Tabletop</h1>
+    <p>Enter your nickname and press the play button to start the game.</p>
+    <input type="text" placeholder="Enter your nickname" id="nickname" />
+    <button id="play-button">Play</button>
+    <div id="game-container" style="display: none;">
+      <div id="ball-container">
+        <div id="ball"></div>
+      </div>
+      <div id="pressure-container">
+        <div id="pressure-up"></div>
+        <div id="pressure-down"></div>
+        <div id="pressure-left"></div>
+        <div id="pressure-right"></div>
+      </div>
+      <div id="timer"></div>
+    </div>
+  </body>
+</html>
