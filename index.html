@@ -127,8 +127,12 @@
         // Set start time
         startTime = Date.now();
     
+        // Set ball position to the center of the game container
+        ballContainer.style.left = `${(gameContainer.offsetWidth - ball.offsetWidth) / 2}px`;
+        ballContainer.style.top = `${(gameContainer.offsetHeight - ball.offsetHeight) / 2}px`;       
+
         // Start game interval
-        gameInterval = setInterval(updateGame, 16);
+        gameInterval = setInterval(updateGame, 16);      
       }
     
       function updateGame() {
