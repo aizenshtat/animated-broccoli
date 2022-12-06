@@ -81,7 +81,26 @@
       right: 0;
       }
     </style>
-    <script>
+  </head>
+  <body>
+    <h1>Balancing a Ball on the Tabletop</h1>
+    <p>Enter your nickname and press the play button to start the game.</p>
+    <input type="text" placeholder="Enter your nickname" id="nickname" />
+    <button id="play-button">Play</button>
+    <div id="game-container" style="display: none;">
+      <div id="ball-container">
+        <div id="ball"></div>
+      </div>
+      <div id="pressure-container">
+        <div id="pressure-up"></div>
+        <div id="pressure-down"></div>
+        <div id="pressure-left"></div>
+        <div id="pressure-right"></div>
+      </div>
+      <div id="timer"></div>
+    </div>
+  </body>
+  <script>
       const gameContainer = document.getElementById("game-container");
       const ballContainer = document.getElementById("ball-container");
       const ball = document.getElementById("ball");
@@ -182,24 +201,5 @@
 
         // Add play button event listener
         playButton.addEventListener("click", startGame);
-        </script>
-  </head>
-  <body>
-    <h1>Balancing a Ball on the Tabletop</h1>
-    <p>Enter your nickname and press the play button to start the game.</p>
-    <input type="text" placeholder="Enter your nickname" id="nickname" />
-    <button id="play-button">Play</button>
-    <div id="game-container" style="display: none;">
-      <div id="ball-container">
-        <div id="ball"></div>
-      </div>
-      <div id="pressure-container">
-        <div id="pressure-up"></div>
-        <div id="pressure-down"></div>
-        <div id="pressure-left"></div>
-        <div id="pressure-right"></div>
-      </div>
-      <div id="timer"></div>
-    </div>
-  </body>
+    </script>
 </html>
